@@ -15,14 +15,4 @@ jobs:
         uses: Tompage1994/github-actions/awx@awx-test
         with:
           version: 13.0.0
-
-      - name: "Install Galaxy dependencies"
-        run: ansible-galaxy collection install -r .github/collections/requirements.yml
-
-      - name: Wait / Sleep
-        uses: jakejarvis/wait-action@v0.1.0
-        with:
-          time: '20s'
-
-      - name: "Perform playbook tests"
-        run: ansible-playbook playbooks/example_with_yaml/configure_tower.yml -e tower_hostname=http://localhost -e tower_username=admin -e tower_password=password
+          test-script: .github/workflows/test-script.sh
