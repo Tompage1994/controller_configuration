@@ -1,9 +1,23 @@
-=============================================================
-redhat_cop.tower_configuration Release Notes
-=============================================================
+============================================
+Redhat_Cop.Tower_Configuration Release Notes
+============================================
 
 .. contents:: Topics
 
+
+v2.0.4
+======
+
+Minor Changes
+-------------
+
+- Added pre-commit hook for local development and automated testing purposes
+- Standardised and corrected all READMEs
+
+Bugfixes
+--------
+
+- Removed defaulted objects for all roles so that they were not always run if using a conditional against the variable. (see https://github.com/redhat-cop/tower_configuration/issues/68)
 
 v0.1.0
 ======
