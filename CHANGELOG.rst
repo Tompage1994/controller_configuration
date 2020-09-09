@@ -5,6 +5,14 @@ redhat_cop.tower_configuration Release Notes
 .. contents:: Topics
 
 
+v0.2.3
+======
+
+Minor Changes
+-------------
+
+- Changelog release cycle
+
 v0.2.0
 ======
 
