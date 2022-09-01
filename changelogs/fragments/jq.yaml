@@ -1,0 +1,4 @@
+---
+minor_changes:
+  - removes json_query, jmespath and community.general dependencies from the collection
+...
