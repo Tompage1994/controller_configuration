@@ -4,7 +4,7 @@ An ansible role which reads variables from a hierarchical and scalable directory
 
 ## Requirements
 
-ansible-galaxy collection install -r tests/collections/requirements.yml to be installed Currently: awx.awx or ansible.controller and redhat_cop.controller_configuration.
+ansible-galaxy collection install -r tests/collections/requirements.yml to be installed Currently: awx.awx or ansible.controller and infra.controller_configuration.
 
 ## Role Variables
 
@@ -12,39 +12,39 @@ ansible-galaxy collection install -r tests/collections/requirements.yml to be in
 
 The following Variables set the organization where should be applied the configuration, the absolute or relative of the directory structure where the variables will be stored and the life-cycle environment to use.
 
-|Variable Name|Default Value|Required|Description|
-|:---:|:---:|:---:|:---:|
-|`orgs:`|Acme|yes|This variable sets the organization where should be applied the configuration.|
-|`dir_orgs_vars:`|orgs_vars|yes|This variable sets the directory path where the variables will be store.|
-|`env:`|dev|yes|This variable sets the life-cycle environment to use.|
-|`controller_location:`|''|no|This variable sets object localtion. It is useful when the configuration need to be replicated in an active/passive sites architecture|
-|`filetree_controller_settings`|{{ dir_orgs_vars }}/{{ orgs }}/env/{{ env }}/controller_settings.d/|yes|Directory path to load controller object variables|
-|`filetree_controller_organizations`|{{ dir_orgs_vars }}/{{ orgs }}/env/common/controller_organizations.d/|yes|Directory path to load controller object variables|
-|`filetree_controller_labels`|{{ dir_orgs_vars }}/{{ orgs }}/env/common/controller_labels.d/|yes|Directory path to load controller object variables|
-|`filetree_controller_user_accounts`| {{ dir_orgs_vars }}/{{ orgs }}/env/{{ env }}/controller_users.d/|
-|`filetree_controller_teams`| {{ dir_orgs_vars }}/{{ orgs }}/env/common/controller_teams.d/|yes|Directory path to load controller object variables|
-|`filetree_controller_credential_types`| {{ dir_orgs_vars }}/{{ orgs }}/env/common/controller_credential_types.d/|yes|Directory path to load controller object variables|
-|`filetree_controller_credentials`| {{ dir_orgs_vars }}/{{ orgs }}/env/{{ env }}/controller_credentials.d/|yes|Directory path to load controller object variables|
-|`filetree_controller_credential_input_sources`| {{ dir_orgs_vars }}/{{ orgs }}/env/common/controller_credential_input_sources.d/|yes|Directory path to load controller object variables|
-|`filetree_controller_notifications`| {{ dir_orgs_vars }}/{{ orgs }}/env/common/controller_notification_templates.d/|yes|Directory path to load controller object variables|
-|`filetree_controller_projects`| {{ dir_orgs_vars }}/{{ orgs }}/env/common/controller_projects.d/|yes|Directory path to load controller object variables|
-|`filetree_controller_execution_environments`| {{ dir_orgs_vars }}/{{ orgs }}/env/{{ env }}/controller_execution_environments.d/|yes|Directory path to load controller object variables|
-|`filetree_controller_applications`| {{ dir_orgs_vars }}/{{ orgs }}/env/common/controller_applications.d/|yes|Directory path to load controller object variables|
-|`filetree_controller_inventories`| {{ dir_orgs_vars }}/{{ orgs }}/env/common/controller_inventories.d/|yes|Directory path to load controller object variables|
-|`filetree_controller_inventory_sources`| {{ dir_orgs_vars }}/{{ orgs }}/env/{{ env }}/controller_inventory_sources.d/|yes|Directory path to load controller object variables|
-|`filetree_controller_instance_groups`| {{ dir_orgs_vars }}/{{ orgs }}/env/{{ env }}/controller_instance_groups.d/|yes|Directory path to load controller object variables|
-|`filetree_controller_hosts`| {{ dir_orgs_vars }}/{{ orgs }}/env/{{ env }}/controller_hosts.d/|yes|Directory path to load controller object variables|
-|`filetree_controller_groups`| {{ dir_orgs_vars }}/{{ orgs }}/env/common/controller_groups.d/|yes|Directory path to load controller object variables|
-|`filetree_controller_templates`| {{ dir_orgs_vars }}/{{ orgs }}/env/common/controller_job_templates.d/|yes|Directory path to load controller object variables|
-|`filetree_controller_workflow_job_templates`| {{ dir_orgs_vars }}/{{ orgs }}/env/common/controller_workflow_job_templates.d/|yes|Directory path to load controller object variables|
-|`filetree_controller_schedules`| {{ dir_orgs_vars }}/{{ orgs }}/env/common/controller_schedules.d/|yes|Directory path to load controller object variables|
-|`filetree_controller_roles`| {{ dir_orgs_vars }}/{{ orgs }}/env/common/controller_roles.d/|yes|Directory path to load controller object variables|
+|Variable Name|Type|Default Value|Required|Description|
+|:---:|:---:|:---:|:---:|:---:|
+|`orgs`|String|Acme|yes|This variable sets the organization where should be applied the configuration.|
+|`dir_orgs_vars`|String|orgs_vars|yes|This variable sets the directory path where the variables will be store.|
+|`env:`|String|dev|yes|This variable sets the life-cycle environment to use.|
+|`controller_location`|String|''|no|This variable sets object localtion. It is useful when the configuration need to be replicated in an active/passive sites architecture|
+|`filetree_controller_settings`|String/List(String)|{{ dir_orgs_vars }}/{{ orgs }}/env/{{ env }}/controller_settings.d/|yes|Directory path to load controller object variables|
+|`filetree_controller_organizations`|String/List(String)|{{ dir_orgs_vars }}/{{ orgs }}/env/common/controller_organizations.d/|yes|Directory path to load controller object variables|
+|`filetree_controller_labels`|String/List(String)|{{ dir_orgs_vars }}/{{ orgs }}/env/common/controller_labels.d/|yes|Directory path to load controller object variables|
+|`filetree_controller_user_accounts`|String/List(String)|{{ dir_orgs_vars }}/{{ orgs }}/env/{{ env }}/controller_users.d/|yes|Directory path to load controller object variables|
+|`filetree_controller_teams`|String/List(String)|{{ dir_orgs_vars }}/{{ orgs }}/env/common/controller_teams.d/|yes|Directory path to load controller object variables|
+|`filetree_controller_credential_types`|String/List(String)|{{ dir_orgs_vars }}/{{ orgs }}/env/common/controller_credential_types.d/|yes|Directory path to load controller object variables|
+|`filetree_controller_credentials`|String/List(String)|{{ dir_orgs_vars }}/{{ orgs }}/env/{{ env }}/controller_credentials.d/|yes|Directory path to load controller object variables|
+|`filetree_controller_credential_input_sources`|String/List(String)|{{ dir_orgs_vars }}/{{ orgs }}/env/common/controller_credential_input_sources.d/|yes|Directory path to load controller object variables|
+|`filetree_controller_notifications`|String/List(String)|{{ dir_orgs_vars }}/{{ orgs }}/env/common/controller_notification_templates.d/|yes|Directory path to load controller object variables|
+|`filetree_controller_projects`|String/List(String)|{{ dir_orgs_vars }}/{{ orgs }}/env/common/controller_projects.d/|yes|Directory path to load controller object variables|
+|`filetree_controller_execution_environments`|String/List(String)|{{ dir_orgs_vars }}/{{ orgs }}/env/{{ env }}/controller_execution_environments.d/|yes|Directory path to load controller object variables|
+|`filetree_controller_applications`|String/List(String)|{{ dir_orgs_vars }}/{{ orgs }}/env/common/controller_applications.d/|yes|Directory path to load controller object variables|
+|`filetree_controller_inventories`|String/List(String)|{{ dir_orgs_vars }}/{{ orgs }}/env/common/controller_inventories.d/|yes|Directory path to load controller object variables|
+|`filetree_controller_inventory_sources`|String/List(String)|{{ dir_orgs_vars }}/{{ orgs }}/env/{{ env }}/controller_inventory_sources.d/|yes|Directory path to load controller object variables|
+|`filetree_controller_instance_groups`|String/List(String)|{{ dir_orgs_vars }}/{{ orgs }}/env/{{ env }}/controller_instance_groups.d/|yes|Directory path to load controller object variables|
+|`filetree_controller_hosts`|String/List(String)|{{ dir_orgs_vars }}/{{ orgs }}/env/{{ env }}/controller_hosts.d/|yes|Directory path to load controller object variables|
+|`filetree_controller_groups`|String/List(String)|{{ dir_orgs_vars }}/{{ orgs }}/env/common/controller_groups.d/|yes|Directory path to load controller object variables|
+|`filetree_controller_templates`|String/List(String)|{{ dir_orgs_vars }}/{{ orgs }}/env/common/controller_job_templates.d/|yes|Directory path to load controller object variables|
+|`filetree_controller_workflow_job_templates`|String/List(String)|{{ dir_orgs_vars }}/{{ orgs }}/env/common/controller_workflow_job_templates.d/|yes|Directory path to load controller object variables|
+|`filetree_controller_schedules`|String/List(String)|{{ dir_orgs_vars }}/{{ orgs }}/env/common/controller_schedules.d/|yes|Directory path to load controller object variables|
+|`filetree_controller_roles`|String/List(String)|{{ dir_orgs_vars }}/{{ orgs }}/env/common/controller_roles.d/|yes|Directory path to load controller object variables|
 
 ### Data Structure
 
-- It accepts two data models as the roles in the redhat_cop.controller_configuration collection,a simple straightforward easy to maintain model, and another based on the controller api.
+- It accepts two data models as the roles in the infra.controller_configuration collection,a simple straightforward easy to maintain model, and another based on the controller api.
 - Variables should be stored in yaml files. It could be used vault to encrypt sensitive data when needed.
-- All variables should be taken from the awx or automation controller object roles from the redhat_cop.controller_configuration collection.
+- All variables should be taken from the awx or automation controller object roles from the infra.controller_configuration collection.
 
 ```yaml
 ---
@@ -139,14 +139,14 @@ orgs_vars/Organization1
     │   │       ├── controller_projects_inventory_sourcea_prod.yml
     │   │       ├── controller_projects_inventory_sourceb_dev.yml
     │   │       └── controller_projects_inventory_sourceb_prod.yml
-    │   ├── controller_roles.d
-    │   │   ├── app-example
-    │   │   │   ├── controller_roles_cmdb_approvals.yml
-    │   │   │   ├── controller_roles_inventories.yml
-    │   │   │   ├── controller_roles_inventory_wf_update.yml
-    │   │   │   ├── controller_roles_teams.yml
-    │   │   │   └── controller_roles_users.yml
-    │   │   └── controller_roles.yml
+    │   ├── controller_roles.d                                  (1)
+    │   │   ├── app-example                                     (1)
+    │   │   │   ├── controller_roles_cmdb_approvals.yml         (1)
+    │   │   │   ├── controller_roles_inventories.yml            (1)
+    │   │   │   ├── controller_roles_inventory_wf_update.yml    (1)
+    │   │   │   ├── controller_roles_teams.yml                  (1)
+    │   │   │   └── controller_roles_users.yml                  (1)
+    │   │   └── controller_roles.yml                            (1)
     │   ├── controller_schedules.d
     │   │   ├── app-casc
     │   │   │   └── controller_schedules_casc.yml
@@ -207,13 +207,13 @@ orgs_vars/Organization1
     │   │   │   ├── controller_inventory_sources_sourceb_dev.yml
     │   │   │   └── controller_inventory_sources_sourceb_prod.yml
     │   │   └── controller_inventory_sources.yml
-    │   └── controller_settings.d                           (1)
-    │       ├── app-examples                                (1)
-    │       │   ├── controller_settings_jobs.yml            (1)
-    │       │   ├── controller_settings_ldap.yml            (1)
-    │       │   ├── controller_settings_system.yml          (1)
-    │       │   └── controller_settings_user_interface.yml  (1)
-    │       └── controller_settings.yml                     (1)
+    │   └── controller_settings.d                               (2)
+    │       ├── app-examples                                    (2)
+    │       │   ├── controller_settings_jobs.yml                (2)
+    │       │   ├── controller_settings_ldap.yml                (2)
+    │       │   ├── controller_settings_system.yml              (2)
+    │       │   └── controller_settings_user_interface.yml      (2)
+    │       └── controller_settings.yml                         (2)
     └── demo-prd
         ├── controller_credentials.d
         │   ├── app-examples
@@ -255,16 +255,18 @@ orgs_vars/Organization1
         │   │   ├── controller_inventory_sources_sourceb_dev.yml
         │   │   └── controller_inventory_sources_sourceb_prod.yml
         │   └── controller_inventory_sources.yml
-        └── controller_settings.d                          (1)
-            ├── app-examples                               (1)
-            │   ├── controller_settings_jobs.yml           (1)
-            │   ├── controller_settings_ldap.yml           (1)
-            │   ├── controller_settings_system.yml         (1)
-            │   └── controller_settings_user_interface.yml (1)
-            └── controller_settings.yml                    (1)
+        └── controller_settings.d                               (2)
+            ├── app-examples                                    (2)
+            │   ├── controller_settings_jobs.yml                (2)
+            │   ├── controller_settings_ldap.yml                (2)
+            │   ├── controller_settings_system.yml              (2)
+            │   └── controller_settings_user_interface.yml      (2)
+            └── controller_settings.yml                         (2)
 ```
 
-> **NOTE (1):** These directories and files must belong to SuperAdmin Organization ONLY, because must have admin super powers.
+> **NOTE (1):** These directory and files may belong to SuperAdmin Organization ONLY. If any other organization defines it's own `roles`, they must duplicate the ones given by the SuperAdmin Organization or they will be dropped.
+>
+> **NOTE (2):** These directories and files must belong to SuperAdmin Organization ONLY, because must have admin super powers.
 
 ## Role Tags
 
@@ -317,7 +319,7 @@ The role is designed to be used with tags, each tags correspond to an AWX or Aut
     - block:
         - name: Include Tasks to load Galaxy credentials to be added to Organizations
           ansible.builtin.include_role:
-            name: redhat_cop.controller_configuration.filetree_read
+            name: infra.controller_configuration.filetree_read
             tasks_from: "{{ create_orgs_credentials }}"
           loop:
             - organizations.yml
@@ -327,7 +329,7 @@ The role is designed to be used with tags, each tags correspond to an AWX or Aut
 
         - name: Include Tasks to add Galaxy credentials to Organizations
           ansible.builtin.include_role:
-            name: redhat_cop.controller_configuration.dispatch
+            name: infra.controller_configuration.dispatch
             apply:
               tags:
                 - organizations
@@ -339,8 +341,8 @@ The role is designed to be used with tags, each tags correspond to an AWX or Aut
               - {role: credentials, var: controller_credentials, tags: credentials}
 
   roles:
-    - {role: redhat_cop.controller_configuration.filetree_read }
-    - {role: redhat_cop.controller_configuration.dispatch }
+    - {role: infra.controller_configuration.filetree_read }
+    - {role: infra.controller_configuration.dispatch }
 
   post_tasks:
     - name: "Delete the Authentication Token used"

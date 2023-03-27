@@ -60,9 +60,9 @@ This also speeds up the overall role.
 |:---:|:---:|:---:|:---:|:---:|
 |`target_credential`|""|yes|str|Name of credential to have the input source applied|
 |`input_field_name`|""|yes|str|Name of field which will be written by the input source|
-|`source_credential`|""|str|no|Name of the source credential which points to a credential source|
-|`metadata`|""|str|no|The metadata applied to the source.|
-|`description`|`False`|no|str|Description to use for the credential input source.|
+|`source_credential`|""|no|str|Name of the source credential which points to a credential source|
+|`metadata`|""|no|dict|The metadata applied to the source.|
+|`description`|""|no|str|Description to use for the credential input source.|
 |`state`|`present`|no|str|Desired state of the resource.|
 
 For further details on fields see <https://docs.ansible.com/automation-controller/latest/html/userguide/credential_plugins.html>
@@ -117,17 +117,17 @@ controller_credential_input_sources:
   # controller_password: changeme
   pre_tasks:
     - name: Include vars from controller_configs directory
-      include_vars:
+      ansible.builtin.include_vars:
         dir: ./yaml
         ignore_files: [controller_config.yml.template]
         extensions: ["yml"]
   roles:
-    - {role: redhat_cop.controller_configuration.credential_input_sources, when: controller_credential_input_sources is defined}
+    - {role: infra.controller_configuration.credential_input_sources, when: controller_credential_input_sources is defined}
 ```
 
 ## License
 
-[MIT](LICENSE)
+[MIT](https://github.com/redhat-cop/controller_configuration#licensing)
 
 ## Author
 

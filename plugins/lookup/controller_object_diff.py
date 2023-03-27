@@ -67,13 +67,13 @@ EXAMPLES = """
 
 - name: "Find the difference of Project between what is on the Controller versus curated list."
   set_fact:
-    project_difference: "{{ lookup('redhat_cop.controller_configuration.controller_object_diff',
+    project_difference: "{{ lookup('infra.controller_configuration.controller_object_diff',
       api_list=controller_api_results, compare_list=differential_item.differential_test_items,
       with_present=true, set_absent=true ) }}"
 
 - name: Add Projects
   include_role:
-    name: redhat_cop.controller_configuration.projects
+    name: infra.controller_configuration.projects
   vars:
     controller_projects: "{{ project_difference }}"
 
@@ -93,6 +93,7 @@ from ansible.plugins.lookup import LookupBase
 from ansible.errors import AnsibleError, AnsibleLookupError
 from ansible.module_utils._text import to_native
 from ansible.utils.display import Display
+import copy
 
 
 class LookupModule(LookupBase):
@@ -119,7 +120,7 @@ class LookupModule(LookupBase):
             return [api_list]
 
         # Set Keys to keep for each list. Depending on type
-        if api_list[0]["type"] == "organization" or api_list[0]["type"] == "credential_type":
+        if api_list[0]["type"] == "organization" or api_list[0]["type"] == "credential_type" or api_list[0]["type"] == "instance_group":
             keys_to_keep = ["name"]
             api_keys_to_keep = ["name"]
         elif api_list[0]["type"] == "user":
@@ -131,6 +132,14 @@ class LookupModule(LookupBase):
         elif api_list[0]["type"] == "group" or api_list[0]["type"] == "host":
             keys_to_keep = ["name", "inventory"]
             api_keys_to_keep = ["name", "summary_fields"]
+        elif api_list[0]["type"] == "schedule":
+            keys_to_keep = ["name", "unified_job_template"]
+            api_keys_to_keep = ["name", "summary_fields"]
+        elif api_list[0]["type"] == "execution_environment":
+            keys_to_keep = ["name", "organization", "image"]
+            api_keys_to_keep = ["name", "summary_fields", "image"]
+        elif api_list[0]["type"] == "role":
+            pass
         else:
             keys_to_keep = ["name", "organization"]
             api_keys_to_keep = ["name", "summary_fields"]
@@ -143,19 +152,27 @@ class LookupModule(LookupBase):
                 keys_to_keep.append("inventory")
                 api_keys_to_keep.append("inventory")
 
-        for item in compare_list:
-            for key in keys_to_keep:
-                if key not in item.keys():
-                    self.handle_error(msg="Key: '{0}' missing from item in compare_list item: {1}".format(key, item))
+        if api_list[0]["type"] != "role":
+            for item in compare_list:
+                for key in keys_to_keep:
+                    if key not in item.keys():
+                        self.handle_error(msg="Key: '{0}' missing from item in compare_list item: {1}".format(key, item))
 
-        for item in api_list:
-            for key in api_keys_to_keep:
-                if key not in item.keys():
-                    self.handle_error(msg="Key: '{0}' missing from item in api_list. Does this object come from the api? item: {1}".format(key, item))
+            for item in api_list:
+                for key in api_keys_to_keep:
+                    if key not in item.keys():
+                        self.handle_error(msg="Key: '{0}' missing from item in api_list. Does this object come from the api? item: {1}".format(key, item))
 
         # Reduce list to name and organization
-        compare_list_reduced = [{key: item[key] for key in keys_to_keep} for item in compare_list]
-        api_list_reduced = [{key: item[key] for key in api_keys_to_keep} for item in api_list]
+        if api_list[0]["type"] == "role":
+            compare_list_reduced = copy.deepcopy(compare_list)
+            api_list_reduced = copy.deepcopy(api_list)
+        elif api_list[0]["type"] == "instance_group":
+            compare_list_reduced = [{key: item[key] for key in keys_to_keep} for item in compare_list]
+            api_list_reduced = [{key: item[key] for key in api_keys_to_keep} for item in api_list if item["summary_fields"]["user_capabilities"]["delete"]]
+        else:
+            compare_list_reduced = [{key: item[key] for key in keys_to_keep} for item in compare_list]
+            api_list_reduced = [{key: item[key] for key in api_keys_to_keep} for item in api_list]
 
         # Convert summary field name into org name Only if not type organization
         if api_list[0]["type"] == "group" or api_list[0]["type"] == "host":
@@ -177,16 +194,90 @@ class LookupModule(LookupBase):
                 item.update({"unified_job_template": item["summary_fields"]["unified_job_template"]["name"]})
                 item.update({"workflow_job_template": item["summary_fields"]["workflow_job_template"]["name"]})
                 item.pop("summary_fields")
-        elif api_list[0]["type"] != "organization" and api_list[0]["type"] != "user" and api_list[0]["type"] != "credential_type":
+        elif api_list[0]["type"] == "schedule":
+            for item in api_list_reduced:
+                item.update({"unified_job_template": item["summary_fields"]["unified_job_template"]["name"]})
+                item.pop("summary_fields")
+        elif api_list[0]["type"] == "role":
+            for item in api_list_reduced:
+                if item["resource_type"] == "organization":
+                    item.update({"organizations": [item[item["resource_type"]]]})
+                item.update({"role": item["name"].lower()})
+                # Remove the extra fields
+                item.pop("users")
+                item.pop("teams")
+                item.pop("name")
+                item.pop("resource_type")
+                if "organization" in item:
+                    item.pop("organization")
+                if "type" in item:
+                    item.pop("type")
+            list_to_extend = []
+            list_to_remove = []
+            for item in compare_list_reduced:
+                target_teams_expanded = False
+                job_templates_expanded = False
+                workflows_expanded = False
+                if "target_teams" in item:
+                    for team in item["target_teams"]:
+                        new_item = copy.deepcopy(item)
+                        new_item.update({"team": team})
+                        new_item.pop("target_teams")
+                        if "job_templates" in new_item:
+                            new_item.pop("job_templates")
+                        if "workflows" in new_item:
+                            new_item.pop("workflows")
+                        list_to_extend.append(new_item)
+                    target_teams_expanded = True
+                if "job_templates" in item:
+                    for job_template in item["job_templates"]:
+                        new_item = copy.deepcopy(item)
+                        new_item.update({"job_template": job_template})
+                        new_item.pop("job_templates")
+                        if "target_teams" in new_item:
+                            new_item.pop("target_teams")
+                        if "workflows" in new_item:
+                            new_item.pop("workflows")
+                        list_to_extend.append(new_item)
+                    job_templates_expanded = True
+                if "workflows" in item:
+                    for workflow in item["workflows"]:
+                        new_item = copy.deepcopy(item)
+                        new_item.update({"workflow_job_template": workflow})
+                        new_item.pop("workflows")
+                        if "target_teams" in new_item:
+                            new_item.pop("target_teams")
+                        if "job_templates" in new_item:
+                            new_item.pop("job_templates")
+                        list_to_extend.append(new_item)
+                    workflows_expanded = True
+                if target_teams_expanded or job_templates_expanded or workflows_expanded:
+                    list_to_remove.append(item)
+            for item in list_to_remove:
+                compare_list_reduced.remove(item)
+            compare_list_reduced.extend(list_to_extend)
+        elif (
+            api_list[0]["type"] != "organization"
+            and api_list[0]["type"] != "user"
+            and api_list[0]["type"] != "credential_type"
+            and api_list[0]["type"] != "schedule"
+            and api_list[0]["type"] != "instance_group"
+        ):
             for item in api_list_reduced:
                 item.update({"organization": item["summary_fields"]["organization"]["name"]})
                 item.pop("summary_fields")
 
-        self.display.warning("compare_list_reduced: {0}".format(compare_list_reduced))
-        self.display.warning("api_list_reduced: {0}".format(api_list_reduced))
+        self.display.v("compare_list_reduced: {0}".format(compare_list_reduced))
+        self.display.v("api_list_reduced: {0}".format(api_list_reduced))
 
         # Find difference between lists
-        difference = [i for i in api_list_reduced if i not in compare_list_reduced]
+        if api_list[0]["type"] != "role":
+            difference = [i for i in api_list_reduced if i not in compare_list_reduced]
+        else:
+            difference = []
+            for item in api_list_reduced:
+                if item not in compare_list_reduced:
+                    difference.append(item)
 
         # Set
         if self.get_option("set_absent"):
@@ -199,5 +290,13 @@ class LookupModule(LookupBase):
             compare_list.extend(difference)
             # Return Compare list with difference attached
             difference = compare_list
+
+        if api_list[0]["type"] == "role":
+            difference_to_remove = []
+            for item in difference:
+                if "no_resource_type" in item or len(item) <= 3:
+                    difference_to_remove.append(item)
+            for item in difference_to_remove:
+                difference.remove(item)
 
         return [difference]

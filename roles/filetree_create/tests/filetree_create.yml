@@ -1,5 +1,6 @@
 ---
-- hosts: all
+- name: Filetree Create Test
+  hosts: all
   connection: local
   gather_facts: false
   vars:
@@ -10,6 +11,10 @@
 
   pre_tasks:
     - name: "Setup authentication (block)"
+      no_log: "{{ controller_configuration_filetree_create_secure_logging }}"
+      when: controller_oauthtoken is not defined
+      tags:
+        - always
       block:
         - name: "Get the Authentication Token for the future requests"
           ansible.builtin.uri:
@@ -26,13 +31,9 @@
           ansible.builtin.set_fact:
             controller_oauthtoken: "{{ authtoken_res.json.token }}"
             controller_oauthtoken_url: "{{ authtoken_res.json.url }}"
-      no_log: "{{ controller_configuration_filetree_create_secure_logging | default('false') }}"
-      when: controller_oauthtoken is not defined
-      tags:
-        - always
 
   roles:
-    - redhat_cop.controller_configuration.filetree_create
+    - infra.controller_configuration.filetree_create
 
   post_tasks:
     - name: "Delete the Authentication Token used"

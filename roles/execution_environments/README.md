@@ -58,7 +58,7 @@ This also speeds up the overall role.
 
 |Variable Name|Default Value|Required|Type|Description|
 |:---:|:---:|:---:|:---:|:---:|
-|`name`|""|yes|str|Name of Job Template|
+|`name`|""|yes|str|Name of execution environment|
 |`description`|""|no|str|Description to use for the execution environment.|
 |`image`|""|yes|str|Container image to use for the execution environment|
 |`organization`|""|no|str|The organization the execution environment belongs to.|
@@ -108,12 +108,12 @@ controller_execution_environments:
   tasks:
     - name: Add Execution Environments
       include_role:
-        name: redhat_cop.controller_configuration.execution_environments
+        name: infra.controller_configuration.execution_environments
 ```
 
 ## License
 
-[MIT](LICENSE)
+[MIT](https://github.com/redhat-cop/controller_configuration#licensing)
 
 ## Author
 

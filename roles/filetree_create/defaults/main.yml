@@ -15,7 +15,7 @@ controller_schedules: []
 controller_settings: []
 controller_teams: []
 controller_user_accounts: []
-controller_workflow_job_templates: []
+controller_workflows: []
 
 # Output directory path
 output_path: "/tmp/filetree_output"
@@ -24,5 +24,8 @@ output_path: "/tmp/filetree_output"
 query_controller_api_max_objects: 10000
 
 controller_configuration_filetree_create_secure_logging: "{{ controller_configuration_secure_logging | default('false') }}"
+
+input_tag:
+  - all
 
 ...

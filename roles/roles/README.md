@@ -146,17 +146,17 @@ controller_roles:
   # controller_password: changeme
   pre_tasks:
     - name: Include vars from controller_configs directory
-      include_vars:
+      ansible.builtin.include_vars:
         dir: ./yaml
         ignore_files: [controller_config.yml.template]
         extensions: ["yml"]
   roles:
-    - {role: redhat_cop.controller_configuration.roles, when: controller_roles is defined}
+    - {role: infra.controller_configuration.roles, when: controller_roles is defined}
 ```
 
 ## License
 
-[MIT](LICENSE)
+[MIT](https://github.com/redhat-cop/controller_configuration#licensing)
 
 ## Author
 

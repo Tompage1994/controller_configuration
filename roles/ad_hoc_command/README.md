@@ -45,7 +45,7 @@ controller_configuration_ad_hoc_command_secure_logging defaults to the value of 
 |Variable Name|Default Value|Required|Type|Description|
 |:---:|:---:|:---:|:---:|:---:|
 |`job_type`|"run"|no|str|Job_type to use for the ad hoc command. Either run or check.|
-|`inventory`|""|str|yes|Inventory to use for the ad hoc command.|
+|`inventory`|""|yes|str|Inventory to use for the ad hoc command.|
 |`limit`|`False`|no|str|Limit to use for the ad hoc command.|
 |`credential`|""|yes|str|Credential to use for ad hoc command.|
 |`execution_environment`|""|no|str|Execution Environment to use for ad hoc command.|
@@ -90,18 +90,18 @@ controller_ad_hoc_commands:
   # controller_password: changeme
   pre_tasks:
     - name: Include vars from controller_configs directory
-      include_vars:
+      ansible.builtin.include_vars:
         dir: ./yaml
         ignore_files: [controller_config.yml.template]
         extensions: ["yml"]
   roles:
-    - {role: redhat_cop.controller_configuration.ad_hoc_command, when: controller_ad_hoc_commands is defined}
+    - {role: infra.controller_configuration.ad_hoc_command, when: controller_ad_hoc_commands is defined}
 
 ```
 
 ## License
 
-[MIT](LICENSE)
+[MIT](https://github.com/redhat-cop/controller_configuration#licensing)
 
 ## Author
 

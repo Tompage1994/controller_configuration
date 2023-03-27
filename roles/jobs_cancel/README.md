@@ -45,7 +45,7 @@ controller_configuration_jobs_cancel_secure_logging defaults to the value of con
 |Variable Name|Default Value|Required|Type|Description|
 |:---:|:---:|:---:|:---:|:---:|
 |`id`|""|yes|int|ID of the job to cancel.|
-|`fail_if_not_running`|""|no|bool|Fail loudly if the job can not be canceled.|
+|`fail_if_not_running`|`False`|no|bool|Fail loudly if the job can not be canceled.|
 
 ### Standard Project Data Structure
 
@@ -73,17 +73,17 @@ controller_cancel_jobs:
   # controller_password: changeme
   pre_tasks:
     - name: Include vars from controller_configs directory
-      include_vars:
+      ansible.builtin.include_vars:
         dir: ./yaml
         ignore_files: [controller_config.yml.template]
         extensions: ["yml"]
   roles:
-    - {role: redhat_cop.controller_configuration.jobs_cancel, when: controller_cancel_jobs is defined}
+    - {role: infra.controller_configuration.jobs_cancel, when: controller_cancel_jobs is defined}
 ```
 
 ## License
 
-[MIT](LICENSE)
+[MIT](https://github.com/redhat-cop/controller_configuration#licensing)
 
 ## Author
 

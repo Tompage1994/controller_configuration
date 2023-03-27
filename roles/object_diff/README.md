@@ -1,10 +1,10 @@
 # controller_configuration.object_diff
 
-An ansible role to manage the object diff of the AWX or Automation Controller configuration. This role leverage the controller_object_diff.py lookup plugin of the redhat_cop.controller_configuration, comparing two lists, one taken directly from the API and the other one from the git repository, and it could be used to delete objects in the AWX or Automation Controller that are not defined in the git repository list.
+An ansible role to manage the object diff of the AWX or Automation Controller configuration. This role leverage the controller_object_diff.py lookup plugin of the infra.controller_configuration, comparing two lists, one taken directly from the API and the other one from the git repository, and it could be used to delete objects in the AWX or Automation Controller that are not defined in the git repository list.
 
 ## Requirements
 
-`ansible-galaxy collection install -r tests/collections/requirements.yml` to be installed. Currently: `awx.awx` or `ansible.controller` and `redhat_cop.controller_configuration`.
+`ansible-galaxy collection install -r tests/collections/requirements.yml` to be installed. Currently: `awx.awx` or `ansible.controller` and `infra.controller_configuration`.
 
 ## Role Variables
 
@@ -14,10 +14,11 @@ The following Variables set the organization where should be applied the configu
 
 | Variable Name | Default Value | Required | Description |
 | :------------ | :-----------: | :------: | :---------- |
-| `controller_api_plugin` | `ansible.controller` | yes | Full path for the controller_api_plugin to be used. <br/> Can have two possible values: <br/>&nbsp;&nbsp;- awx.awx.controller_api             # For the community Collection version <br/>&nbsp;&nbsp;- ansible.controller.controller_api  # For the Red Hat Certified Collection version|
+| `controller_api_plugin` | `ansible.controller` | yes | Full path for the controller_api_plugin to be used. <br/> Can have two possible values: <br/>&nbsp;&nbsp;- awx.awx.controller_api             # For the community Collection version <br/>&nbsp;&nbsp;- ansible.controller.controller_api  # For the Red Hat Certified Collection version |
 | `drop_user_external_accounts` | `False` | no | When is true, all users will be taken to compare with SCM configuration as code |
-| `drop_teams` | `False` | no | When is true, all teams will be taken to compare with SCM configuration as code |
 | `protect_not_empty_orgs` | `N/A` | no | When is true, orgs which are not empty, will not be removed |
+| `query_controller_api_max_objects` | 10000 | no | Sets the maximum number of objects to be returned from the API |
+<!--- | `drop_teams` | `False` | no | When is true, all teams will be taken to compare with SCM configuration as code | -->
 
 ## Role Tags
 
@@ -30,6 +31,10 @@ $ ansible-playbook object_diff.yml --list-tags
       TASK TAGS: [credentials, credential_types, groups, hosts, inventories, inventory_sources, job_templates, organizations, projects, teams, users, workflow_job_templates]
 
 ```
+
+## IMPORTANT
+
+To correctly manage `roles`, they can only be defined by a super-admin organization, so all the roles in the Ansible Controller instance are managed by only one organization.
 
 ## Example Playbook
 
@@ -68,8 +73,8 @@ $ ansible-playbook object_diff.yml --list-tags
         - always
 
   roles:
-    - role: redhat_cop.controller_configuration.filetree_read
-    - role: redhat_cop.controller_configuration.object_diff
+    - role: infra.controller_configuration.filetree_read
+    - role: infra.controller_configuration.object_diff
       vars:
         controller_configuration_object_diff_tasks:
           - {name: workflow_job_templates, var: controller_workflows, tags: workflow_job_templates}
@@ -83,7 +88,7 @@ $ ansible-playbook object_diff.yml --list-tags
           - {name: credentials, var: controller_credentials, tags: credentials}
           - {name: credential_types, var: controller_credential_types, tags: credential_types}
           - {name: organizations, var: controller_organizations, tags: organizations}
-    - role: redhat_cop.controller_configuration.dispatch
+    - role: infra.controller_configuration.dispatch
       vars:
         controller_configuration_dispatcher_roles:
           - {role: workflow_job_templates, var: controller_workflows, tags: workflow_job_templates}
@@ -122,6 +127,8 @@ GPLv3+
 - [Silvio Perez](https://github.com/silvinux)
 
 - [Ivan Aragonés](https://github.com/ivarmu)
+
+- [Adonis García](https://github.com/adonisgarciac)
 
 ## Important things to take into account
 

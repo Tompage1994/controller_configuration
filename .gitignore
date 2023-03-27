@@ -3,3 +3,6 @@ collections/*
 galaxy.yml
 *.tar.gz
 *.pyc
+id_rsa*
+test
+tests/output

@@ -63,6 +63,7 @@ This also speeds up the overall role.
 |`wait`|""|no|str|Wait for the project to complete.|
 |`interval`|`controller_configuration_project_update_async_delay`|no|str|The interval to request an update from controller.|
 |`timeout`|""|no|str|If waiting for the job to complete this will abort after this amount of seconds.|
+|`update_project`|`False`|no|bool|If defined and true, the project update will be executed, otherwise it won't.|
 
 ### Standard Project Data Structure
 
@@ -109,18 +110,18 @@ controller_projects:
   # controller_password: changeme
   pre_tasks:
     - name: Include vars from controller_configs directory
-      include_vars:
+      ansible.builtin.include_vars:
         dir: ./yaml
         ignore_files: [controller_config.yml.template]
         extensions: ["yml"]
   roles:
-    - {role: redhat_cop.controller_configuration.project_update, when: controller_projects is defined}
+    - {role: infra.controller_configuration.project_update, when: controller_projects is defined}
 
 ```
 
 ## License
 
-[MIT](LICENSE)
+[MIT](https://github.com/redhat-cop/controller_configuration#licensing)
 
 ## Author
 

@@ -80,18 +80,18 @@ controller_workflow_launch_jobs:
   # controller_password: changeme
   pre_tasks:
     - name: Include vars from controller_configs directory
-      include_vars:
+      ansible.builtin.include_vars:
         dir: ./yaml
         ignore_files: [controller_config.yml.template]
         extensions: ["yml"]
   roles:
-    - {role: redhat_cop.controller_configuration.workflow_launch, when: controller_workflow_launch_jobs is defined}
+    - {role: infra.controller_configuration.workflow_launch, when: controller_workflow_launch_jobs is defined}
 
 ```
 
 ## License
 
-[MIT](LICENSE)
+[MIT](https://github.com/redhat-cop/controller_configuration#licensing)
 
 ## Author
 

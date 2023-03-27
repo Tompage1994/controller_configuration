@@ -1,9 +1,70 @@
-=================================================
-redhat_cop.controller_configuration Release Notes
-=================================================
+============================================
+infra.controller_configuration Release Notes
+============================================
 
 .. contents:: Topics
 
+
+v2.3.1
+======
+
+Bugfixes
+--------
+
+- Ensures vars get loaded properly by dispatch role
+- Fixed issue in filetree_read where arg spec incorrect and caused failure (#550)
+
+v2.3.0
+======
+
+Minor Changes
+-------------
+
+- Adapt filetree_read role tests playbook config-controller-filetree.yml.
+- Add new type of objects for object_diff role:  applications, execution environments, instance groups, notifications and schedules
+- Add no_log to all tasks that populates data to avoid exposing encrypted data
+- Add task to add Galaxy credentials and Execution Environments to Organization.
+- Set the variables to assign_galaxy_credentials_to_org and assign_default_ee_to_org to false in the task to run all roles at dispatch role.
+- avoid to create orgs during drop_diff
+- fixed an extra blank line in schedules readme that was breaking the table
+- removed references to redhat_cop as a collection namespace in the readme files.
+
+Breaking Changes / Porting Guide
+--------------------------------
+
+- updated object_diff role to use the infra namespace, that means to use the role it requires the infra version of the collection. Previous version required the redhat_cop
+
+Bugfixes
+--------
+
+- Added argument_spec for all roles
+- Fixed name of task for inventory source update
+- Fixed variable definitions in readmes
+- Removed master_role_example as no longer required (this wasn't a functional role)
+
+v2.2.5
+======
+
+Minor Changes
+-------------
+
+- Add max_forks, max_concurrent_jobs as options to instance_groups role
+- Add no_log everywhere controller_api_plugin is used to avoid to expose sensitive information in case of crashes.
+- Add no_log everywhere controller_api_plugin is used to avoid to expose sensitive information in case of crashes.
+- Add or fix some variables or extra_vars exported from objects like notifications, inventory, inventory_source, hosts, groups, jt or wjt.
+- Add roles object to object_diff role and controller_object_diff lookup plugin.
+- Fix one query with controller_password to change it and set oauth_token=controller_oauthtoken.
+- Fixed typos in README.md.
+- Improve template to export settings with filetree_create role. Settings will be in yaml format.
+- Renamed the field `update` to `update_project` to avoid colliding with the Python dict update method
+- Renamed variable controller_workflow_job_templates to controller_workflows (the previos one was not used at all).
+- Renamed variable controller_workflow_job_templates to controller_workflows (the previos one was not used at all).
+- return_all: true has been added to return the maximum of max_objects=query_controller_api_max_objects objects.
+
+Bugfixes
+--------
+
+- Enable the ability to define simple_workflow_nodes on workflow_job_templates without the need to set the `state` on a workflow_job_template (https://github.com/redhat-cop/controller_configuration/issues/297).
 
 v2.2.4
 ======

@@ -54,12 +54,12 @@ This also speeds up the overall role.
 
 ### Labels Variables
 
-|Variable Name|Default Value|Required|Description|
-|:---:|:---:|:---:|:---:|
-|`name`|""|yes|Name of this label.|
-|`new_name`|""|no|Setting this option will change the existing name (looked up via the name field).|
-|`organization`|`False`|no|Organization this label belongs to.|
-|`state`|`present`|no|Desired state of the resource.|
+|Variable Name|Default Value|Required|type|Description|
+|:---:|:---:|:---:|:---:|:---:|
+|`name`|""|yes|str|Name of this label.|
+|`new_name`|""|no|str|Setting this option will change the existing name (looked up via the name field).|
+|`organization`|`False`|no|str|Organization this label belongs to.|
+|`state`|`present`|no|str|Desired state of the resource.|
 
 ### Standard Label Data Structure
 
@@ -108,17 +108,17 @@ controller_labels:
   # controller_password: changeme
   pre_tasks:
     - name: Include vars from controller_configs directory
-      include_vars:
+      ansible.builtin.include_vars:
         dir: ./yaml
         ignore_files: [controller_config.yml.template]
         extensions: ["yml"]
   roles:
-    - {role: redhat_cop.controller_configuration.labels, when: controller_labels is defined}
+    - {role: infra.controller_configuration.labels, when: controller_labels is defined}
 ```
 
 ## License
 
-[MIT](LICENSE)
+[MIT](https://github.com/redhat-cop/controller_configuration#licensing)
 
 ## Author
 
