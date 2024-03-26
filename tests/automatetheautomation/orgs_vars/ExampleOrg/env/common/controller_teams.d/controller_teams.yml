@@ -1,10 +1,9 @@
 ---
 controller_teams:
   - name: "{{ orgs }} {{ orgs }}-team"
-    description: "Team for {{ orgs }} Org"
+    description: Team for {{ orgs }} Org
     organization: "{{ orgs }}"
 
   - name: "{{ orgs }} test-group"
-    description: "test-group"
+    description: test-group
     organization: "{{ orgs }}"
-...

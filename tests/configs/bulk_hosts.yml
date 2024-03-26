@@ -7,4 +7,3 @@ temp_controller_bulk_hosts:
     variables:
       some_var: some_val
       ansible_connection: local
-...

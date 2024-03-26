@@ -4,4 +4,3 @@
 controller_username: admin
 controller_password: password
 controller_validate_certs: false
-...

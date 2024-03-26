@@ -40,4 +40,3 @@ controller_projects:
   - name: Test Project 3
     organization: Default
     state: absent
-...

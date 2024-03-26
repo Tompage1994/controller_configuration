@@ -5,4 +5,3 @@ temp_controller_bulk_launch_jobs:
       - unified_job_template: 7
       - unified_job_template: 15
     organization: Default
-...

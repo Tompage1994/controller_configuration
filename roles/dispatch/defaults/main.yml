@@ -85,4 +85,3 @@ controller_configuration_dispatcher_roles:
   - role: workflow_launch
     var: controller_workflow_launch_jobs
     tags: workflow_launch
-...

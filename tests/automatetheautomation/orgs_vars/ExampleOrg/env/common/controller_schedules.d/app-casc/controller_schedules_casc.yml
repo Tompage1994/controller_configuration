@@ -26,5 +26,3 @@ controller_schedules:
       dir_orgs_vars: orgs_vars
       orgs: "{{ orgs }}"
     organization: "{{ orgs }}"
-
-...

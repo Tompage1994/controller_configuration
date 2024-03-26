@@ -34,4 +34,3 @@ users:
       type: user
   - username: controller_user
     is_superuser: true
-...

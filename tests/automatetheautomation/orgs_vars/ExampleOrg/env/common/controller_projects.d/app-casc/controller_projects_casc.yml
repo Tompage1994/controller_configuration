@@ -1,10 +1,10 @@
 ---
 controller_projects:
   - name: "{{ orgs }} CasC_Data"
-    description: "Project to include the vars values of the {{ orgs }} Org"
+    description: Project to include the vars values of the {{ orgs }} Org
     organization: "{{ orgs }}"
     scm_type: git
-    scm_url: "git@gitlab.com:automationiberia.com/global.git"
+    scm_url: git@gitlab.com:automationiberia.com/global.git
     scm_credential: "{{ orgs }} {{ env }} Gitlab Credential"
     scm_branch: "{{ env }}"
     scm_clean: false
@@ -12,4 +12,3 @@ controller_projects:
     scm_update_on_launch: false
     scm_update_cache_timeout: 86400
     allow_override: true
-...

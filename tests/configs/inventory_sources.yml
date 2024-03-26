@@ -43,4 +43,3 @@ controller_inventory_sources:
   - name: "Auto-created source for: test_constructed"
     inventory: test_constructed
     source: constructed
-...

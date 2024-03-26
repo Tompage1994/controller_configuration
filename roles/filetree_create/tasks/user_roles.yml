@@ -1,25 +1,23 @@
 ---
-- name: "Get current Users from the API"
+- name: Get current Users from the API
   ansible.builtin.set_fact:
-    user_roles_lookvar: "{{ query(controller_api_plugin, 'api/v2/users/' + (username | urlencode()) + '/roles/',
-                                  host=controller_hostname, oauth_token=controller_oauthtoken, verify_ssl=controller_validate_certs,
-                                  return_all=true, max_objects=query_controller_api_max_objects)
-                         }}"
+    user_roles_lookvar: "{{ query(controller_api_plugin, 'api/v2/users/' + (username | urlencode()) + '/roles/', host=controller_hostname, oauth_token=controller_oauthtoken,
+      verify_ssl=controller_validate_certs, return_all=true, max_objects=query_controller_api_max_objects) }}"
   no_log: "{{ controller_configuration_filetree_create_secure_logging }}"
 
-- name: "Block for to generate flatten output"
+- name: Block for to generate flatten output
   when:
     - flatten_output is defined
     - flatten_output | bool
   vars:
     __dest: "{{ output_path }}/user_roles.yaml"
   block:
-    - name: "Stat if the output file exists"
+    - name: Stat if the output file exists
       ansible.builtin.stat:
         path: "{{ __dest }}"
       register: user_roles_file
 
-    - name: "Add current user roles to the user roles flat file"
+    - name: Add current user roles to the user roles flat file
       ansible.builtin.blockinfile:
         create: true
         mode: "0644"
@@ -32,27 +30,26 @@
         first_user_role: "{{ not user_roles_file.stat.exists }}"
       when: user_roles_lookvar | length > 0
 
-    - name: "Remove all the blank lines introduced by the last task"
+    - name: Remove all the blank lines introduced by the last task
       ansible.builtin.lineinfile:
         path: "{{ __dest }}"
-        line: ''
+        line: ""
         state: absent
 
-- name: "Block for to generate the filetre_create normal output"
+- name: Block for to generate the filetre_create normal output
   when: flatten_output is not defined or not (flatten_output | bool)
   block:
     - name: "Create the output directory for user roles: {{ output_path }}"
       ansible.builtin.file:
         path: "{{ output_path }}/user_roles"
         state: directory
-        mode: '0755'
+        mode: "0755"
 
-    - name: "Add current roles to the output yaml file"
+    - name: Add current roles to the output yaml file
       ansible.builtin.template:
-        src: "templates/current_user_roles.j2"
+        src: templates/current_user_roles.j2
         dest: "{{ output_path }}/user_roles/current_roles_{{ username | regex_replace('/', '_') }}.yaml"
-        mode: '0644'
+        mode: "0644"
       vars:
         current_user_roles_asset_value: "{{ user_roles_lookvar }}"
       when: user_roles_lookvar | length > 0
-...

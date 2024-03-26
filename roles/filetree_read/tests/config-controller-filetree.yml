@@ -11,15 +11,15 @@
     controller_hostname: "{{ vault_controller_hostname | default(lookup('env', 'CONTROLLER_HOST')) }}"
     controller_validate_certs: "{{ vault_controller_validate_certs | default(lookup('env', 'CONTROLLER_VERIFY_SSL')) }}"
   pre_tasks:
-    - name: "Setup authentication (block)"
+    - name: Setup authentication (block)
       no_log: "{{ controller_configuration_filetree_read_secure_logging | default('false') }}"
       when: controller_oauthtoken is not defined
       tags:
         - always
       block:
-        - name: "Get the Authentication Token for the future requests"
+        - name: Get the Authentication Token for the future requests
           ansible.builtin.uri:
-            url: "https://{{ controller_hostname }}/api/v2/tokens/"
+            url: https://{{ controller_hostname }}/api/v2/tokens/
             user: "{{ controller_username }}"
             password: "{{ controller_password }}"
             method: POST
@@ -28,7 +28,7 @@
             status_code: 201
           register: authtoken_res
 
-        - name: "Set the oauth token to be used since now"
+        - name: Set the oauth token to be used since now
           ansible.builtin.set_fact:
             controller_oauthtoken: "{{ authtoken_res.json.token }}"
             controller_oauthtoken_url: "{{ authtoken_res.json.url }}"
@@ -37,9 +37,9 @@
     - infra.controller_configuration.dispatch
 
   post_tasks:
-    - name: "Delete the Authentication Token used"
+    - name: Delete the Authentication Token used
       ansible.builtin.uri:
-        url: "https://{{ controller_hostname }}{{ controller_oauthtoken_url }}"
+        url: https://{{ controller_hostname }}{{ controller_oauthtoken_url }}
         user: "{{ controller_username }}"
         password: "{{ controller_password }}"
         method: DELETE
@@ -47,4 +47,3 @@
         validate_certs: "{{ controller_validate_certs }}"
         status_code: 204
       when: controller_oauthtoken_url is defined
-...

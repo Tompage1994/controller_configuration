@@ -1,11 +1,11 @@
 ---
 controller_templates:
   - name: "{{ orgs }} CasC_JobTemplates_AAP_CI_Webhook"
-    description: "Template to attend AAP CasC webhook"
+    description: Template to attend AAP CasC webhook
     organization: "{{ orgs }}"
     project: "{{ orgs }} CasC_Data"
     inventory: "{{ orgs }} Localhost"
-    playbook: "config-controller.yml"
+    playbook: config-controller.yml
     job_tags: ci_webhook_trigger
     job_type: run
     fact_caching_enabled: false
@@ -16,14 +16,14 @@ controller_templates:
     extra_vars:
       ansible_python_interpreter: /usr/bin/python3
       ansible_async_dir: /home/runner/.ansible_async/
-    execution_environment: "ee-casc"
+    execution_environment: ee-casc
 
   - name: "{{ orgs }} CasC_JobTemplates_AAP_CI_Config_Controller"
-    description: "Template to deploy AAP Orgs"
+    description: Template to deploy AAP Orgs
     organization: "{{ orgs }}"
     project: "{{ orgs }} CasC_Data"
     inventory: "{{ orgs }} Localhost"
-    playbook: "config-controller.yml"
+    playbook: config-controller.yml
     job_type: run
     fact_caching_enabled: false
     credentials:
@@ -37,14 +37,14 @@ controller_templates:
     extra_vars:
       ansible_python_interpreter: /usr/bin/python3
       ansible_async_dir: /home/runner/.ansible_async/
-    execution_environment: "ee-casc"
+    execution_environment: ee-casc
 
   - name: "{{ orgs }} CasC_JobTemplates_AAP_Desired_State"
-    description: "Template to assure Desired State"
+    description: Template to assure Desired State
     organization: "{{ orgs }}"
     project: "{{ orgs }} CasC_Data"
     inventory: "{{ orgs }} Localhost"
-    playbook: "desired-state.yml"
+    playbook: desired-state.yml
     job_type: run
     fact_caching_enabled: false
     credentials:
@@ -58,5 +58,4 @@ controller_templates:
     extra_vars:
       ansible_python_interpreter: /usr/bin/python3
       ansible_async_dir: /home/runner/.ansible_async/
-    execution_environment: "ee-casc"
-...
+    execution_environment: ee-casc

@@ -6,7 +6,7 @@ differential_expected:
         kind: scm
         name: Source Control
         type: credential_type
-      description: ''
+      description: ""
       inputs:
         username: username
       name: gitlab-team
@@ -27,7 +27,7 @@ differential_expected:
         kind: scm
         name: Source Control
         type: credential_type
-      description: ''
+      description: ""
       inputs:
         username: username
       name: gitlab-user
@@ -260,9 +260,7 @@ differential_expected:
               max: 1024
               min: 0
               new_question: true
-              question_description:
-                target host is required for playbook to work, this
-                host needs to exist in the inventory
+              question_description: target host is required for playbook to work, this host needs to exist in the inventory
               question_name: Target Host
               required: true
               type: text
@@ -442,7 +440,7 @@ differential_expected:
       natural_key:
         type: user
         username: admin
-      password: ''
+      password: ""
       related:
         roles:
           - content_object:
@@ -481,4 +479,3 @@ differential_expected:
             type: role
           - name: System Administrator
             type: role
-...

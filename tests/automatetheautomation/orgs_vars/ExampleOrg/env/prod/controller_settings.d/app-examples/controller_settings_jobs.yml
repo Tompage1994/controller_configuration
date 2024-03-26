@@ -10,4 +10,3 @@ controller_settings:
     value: 0
   - name: MAX_FORKS
     value: 200
-...

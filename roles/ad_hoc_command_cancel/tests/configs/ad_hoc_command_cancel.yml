@@ -4,4 +4,3 @@ controller_ad_hoc_commands:
   fail_if_not_running: false
   interval: 1
   timeout: 10
-...

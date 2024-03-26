@@ -1,10 +1,9 @@
 ---
 controller_organizations:
   - name: "{{ orgs }}"
-    description: "Organization for globally available objects"
+    description: Organization for globally available objects
     galaxy_credentials:
-      - "Ansible Galaxy"
+      - Ansible Galaxy
       - "{{ orgs }} {{ env }} Automation Hub Community Repository"
       - "{{ orgs }} {{ env }} Automation Hub Published Repository"
       - "{{ orgs }} {{ env }} Automation Hub RH Certified Repository"
-...

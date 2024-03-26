@@ -1,12 +1,12 @@
 ---
 controller_roles:
-  - inventory:  RHVM-01
+  - inventory: RHVM-01
     team: satlab-admin
     role: admin
-  - inventory:  RHVM-02
+  - inventory: RHVM-02
     team: satellite-qe
     role: use
-  - inventory:  RHVM-02
+  - inventory: RHVM-02
     team: satlab-admin
     roles:
       - admin
@@ -26,4 +26,3 @@ controller_roles:
   - job_template: test-template-1
     team: satellite-qe
     role: execute
-...

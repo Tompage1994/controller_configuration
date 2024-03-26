@@ -17,4 +17,3 @@ configure_controller_instance_groups:
               - ansible-runner
               - worker
               - '--private-data-dir=/runner'
-...
