@@ -30,16 +30,18 @@ except ImportError:
     except ImportError:
         raise AnsibleError("This strategy requires either the ansible.controller or awx.awx collection to be installed. Please install and try again.")
 
-from ansible.plugins.strategy import StrategyBase
+from ansible.plugins.strategy.linear import StrategyModule as LinearStrategy
 
 
-class StrategyModule(StrategyBase):
+class StrategyModule(LinearStrategy):
+
+    def __init__(self, tqm):
+        super(StrategyModule, self).__init__(tqm)
 
     def handle_error(self, **kwargs):
         # self._tqm._stdout_callback.error("Required dependencies not met. Exiting playbook." + to_native(kwargs.get('msg')))
         raise AnsibleError(
-            "Required dependencies not met. Exiting playbook. Could not find Job Template '{0}' on Controller."
-            .format(to_native(kwargs['query']['name'])))
+            "Required dependencies not met. Exiting playbook. Could not find Job Template. " + to_native(kwargs['msg']))
 
     def get_connection_params_from_hosts(self, inventory, variable_manager, play_context, connection_vars):
         """
@@ -51,7 +53,7 @@ class StrategyModule(StrategyBase):
             result[v] = None
 
         # Iterate over all hosts in the inventory to find the connection parameters
-        for host in inventory.get_hosts():
+        for host in inventory.get_hosts() + [None]:
             host_vars = variable_manager.get_vars(host=host, play=play_context)
 
             # Check each variable and stop once we find a value
@@ -88,11 +90,12 @@ class StrategyModule(StrategyBase):
 
         # Job template name to check
         jt_dependencies = []
-        for host in self._inventory.get_hosts():
+        for host in self._inventory.get_hosts() + [None]:
             jt_dependencies += list(self._variable_manager.get_vars(host=host, play=iterator._play).get('controller_launch_jobs') or [])
 
         for jt in jt_dependencies:
-            module.get_exactly_one('job_templates', name_or_id=jt)
+            lookup_data = {'organization': module.resolve_name_to_id('organizations', jt['organization'])} if 'organization' in jt.keys() else {}
+            module.get_exactly_one('job_templates', name_or_id=jt['name'], data=lookup_data)
 
         # Proceed with the standard task execution if dependencies are met
-        return super().run(iterator, play_context)
+        return super(StrategyModule, self).run(iterator, play_context)
