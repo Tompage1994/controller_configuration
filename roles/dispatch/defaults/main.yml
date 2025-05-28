@@ -9,15 +9,18 @@ gateway_configuration_dispatcher_roles:
   - role: gateway_settings
     var: gateway_settings
     tags: settings
+  - role: gateway_organizations
+    var: aap_organizations
+    tags: organizations
+    assign_galaxy_credentials_to_org: false
+    assign_default_ee_to_org: false
+    assign_notification_templates_to_org: false
   - role: gateway_applications
     var: aap_applications
     tags: applications
   - role: gateway_http_ports
     var: http_ports_list
     tags: http_ports
-  - role: gateway_organizations
-    var: aap_organizations
-    tags: organizations
   - role: gateway_service_clusters
     var: gateway_service_clusters
     tags: service_clusters
@@ -30,66 +33,61 @@ gateway_configuration_dispatcher_roles:
   - role: gateway_services
     var: gateway_services
     tags: services
+  - role: gateway_teams
+    var: aap_teams
+    tags: teams
+  - role: gateway_users
+    var: aap_user_accounts
+    tags: users
   - role: gateway_role_user_assignments
     var: gateway_role_user_assignments
     tags: role_user_assignments
   - role: gateway_routes
     var: gateway_routes
     tags: routes
-  - role: gateway_teams
-    var: aap_teams
-    tags: teams
-  - role: gateway_users
-    var: aap_user_accounts
-    tags: teams
 
-ah_configuration_dispatcher_roles:
+hub_configuration_dispatcher_roles:
   - role: hub_namespace
-    var: ah_namespaces
+    var: hub_namespaces
     tags: namespaces
   - role: hub_collection
-    var: ah_collections
+    var: hub_collections
     tags: collections
   - role: hub_ee_registry
-    var: ah_ee_registries
+    var: hub_ee_registries
     tags: registries
   - role: hub_ee_repository
-    var: ah_ee_repositories
+    var: hub_ee_repositories
     tags: repos
   - role: hub_ee_repository_sync
-    var: ah_ee_repository_sync
+    var: hub_ee_repository_sync
     tags: reposync
   - role: hub_ee_image
-    var: ah_ee_images
+    var: hub_ee_images
     tags: images
   - role: hub_ee_registry
-    var: ah_ee_registries
+    var: hub_ee_registries
     tags: registry
   - role: hub_ee_registry_index
-    var: ah_ee_registries
+    var: hub_ee_registries
     tags: ee_indices
   - role: hub_ee_registry_sync
-    var: ah_ee_registries
+    var: hub_ee_registries
     tags: regsync
   - role: hub_collection_remote
-    var: ah_collection_remotes
+    var: hub_collection_remotes
     tags: collectionremote
   - role: hub_collection_repository
-    var: ah_collection_repositories
+    var: hub_collection_repositories
     tags: collectionsrep
   - role: hub_collection_repository_sync
-    var: ah_collection_repositories
+    var: hub_collection_repositories
     tags: collectionsrepsync
+
 controller_configuration_dispatcher_roles:
   - role: controller_settings
     var: controller_settings
     tags: settings
-  - role: controller_organizations
-    var: aap_organizations
-    tags: organizations
-    assign_galaxy_credentials_to_org: false
-    assign_default_ee_to_org: false
-    assign_notification_templates_to_org: false
   - role: controller_instances
     var: controller_instances
     tags: instances
@@ -117,7 +115,7 @@ controller_configuration_dispatcher_roles:
   - role: controller_notification_templates
     var: controller_notifications
     tags: notification_templates
-  - role: controller_organizations
+  - role: gateway_organizations
     var: aap_organizations
     tags: organizations
     assign_galaxy_credentials_to_org: true
@@ -125,22 +123,37 @@ controller_configuration_dispatcher_roles:
     assign_notification_templates_to_org: true
   - role: controller_projects
     var: controller_projects
-    tags: projects
+    tags:
+      - inventories
+      - projects
   - role: controller_inventories
     var: controller_inventories
     tags: inventories
   - role: controller_inventory_sources
     var: controller_inventory_sources
-    tags: inventory_sources
+    tags:
+      - inventories
+      - inventory_sources
   - role: controller_inventory_source_update
     var: controller_inventory_sources
-    tags: inventory_sources
+    tags:
+      - inventories
+      - inventory_sources
   - role: controller_hosts
     var: controller_hosts
-    tags: hosts
+    tags:
+      - inventories
+      - hosts
   - role: controller_bulk_host_create
     var: controller_bulk_hosts
-    tags: bulk_hosts
+    tags:
+      - inventories
+      - bulk_hosts
+  - role: controller_host_groups
+    var: controller_groups
+    tags:
+      - inventories
+      - host_groups
   - role: controller_job_templates
     var: controller_templates
     tags: job_templates
@@ -150,13 +163,20 @@ controller_configuration_dispatcher_roles:
   - role: controller_schedules
     var: controller_schedules
     tags: schedules
+  - role: controller_roles
+    var: controller_roles
+    tags: roles
   - role: controller_job_launch
     var: controller_launch_jobs
     tags: job_launch
   - role: controller_workflow_launch
     var: controller_workflow_launch_jobs
     tags: workflow_launch
+
 eda_configuration_dispatcher_roles:
+  - role: eda_credential_types
+    var: eda_credential_types
+    tags: credential_type
   - role: eda_credentials
     var: eda_credentials
     tags: credential
@@ -166,6 +186,9 @@ eda_configuration_dispatcher_roles:
   - role: eda_projects
     var: eda_projects
     tags: project
+  - role: eda_event_streams
+    var: eda_event_streams
+    tags: event_stream
   - role: eda_decision_environments
     var: eda_decision_environments
     tags: decision_environment
@@ -175,9 +198,8 @@ eda_configuration_dispatcher_roles:
 
 aap_configuration_dispatcher_roles: >
   {{ gateway_configuration_dispatcher_roles
-   + ah_configuration_dispatcher_roles
+   + hub_configuration_dispatcher_roles
    + controller_configuration_dispatcher_roles
-   + eda_configuration_dispatcher_roles
-  }}
+   + eda_configuration_dispatcher_roles }}
 
 ...

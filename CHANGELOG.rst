@@ -1,9 +1,90 @@
-============================================
-infra.aap_configuration Release Notes
-============================================
+======================================
+infra.aap\_configuration Release Notes
+======================================
 
 .. contents:: Topics
 
+v3.3.0
+======
+
+Minor Changes
+-------------
+
+- The creation order for the workflows is 'workflow -> workflow nodes'. The deletion order is the same one, but in reverse.
+- added auto_migrate_users_to option to the gateway authenticator role.
+- added dependencies to our galaxy.yml, the lowest version has been set to collections compatible with AAP 2.5, which this collection already requires, This should not be a breaking or major change for anyone, just codifies our dependencies, now that a bug in console.redhat.com has been fixed.
+- added scm_branch option to the eda_projects role, this requires ansible.eda >2.8.0, and fixes
+
+Breaking Changes / Porting Guide
+--------------------------------
+
+- In order to comply with stricter linting rules and to make the collection more explicit, controller roles were chagned to be explicit with ansible.controller. awx.awx was not compatible and this just codifies the change. Please transition to using the certified ansible.controller collection to continue using this collection.
+
+v3.2.0
+======
+
+Major Changes
+-------------
+
+- Dispatch no longer calls the controller_organizations role by default, as the gateway_organizations role should be sufficient.
+- Restucture the gateway_organizations role so that only one role needs to be called to create and configure the organization. Adds the logic which existed from the controller_organizations role previously.
+
+Bugfixes
+--------
+
+- Correct README.md to indicate destroy_current_nodes is bool
+- Fixed the object creation order for the gateway staf.
+- Update loop label to only show name of credential type instead of entire json object
+- Update loop label to only show name of job template instead of entire json object
+- Update loop label to only show name of workflow job template instead of entire json object
+- added missing references to controller_roles in dispatcher defaults
+- added missing references to eda_credential_types and eda_event_streams in dispatcher defaults
+
+v3.1.0
+======
+
+Major Changes
+-------------
+
+- renamed some more vars that got missed in the new naming convention.
+
+Bugfixes
+--------
+
+- updated gateway services async and no log vars to correct naming convention.
+
+v3.0.0
+======
+
+Release Summary
+---------------
+
+| Release Date: 2024-10-31
+| The collection has been updated for AAP 2.5 use and has only been tested against AAP 2.5, it has been updated to include the previously separated hub, eda, and gateway collection roles.
+| `Conversion Guide <https://github.com/redhat-cop/infra.aap_configuration/blob/devel/CONVERSION_GUIDE.md>`__
+
+Major Changes
+-------------
+
+- Introduction of roles for gateway
+- Rename of collection to infra.aap_configuration
+- Roles from infra.ah_configuration and infra.eda_configuration have migrated into this collection
+
+Breaking Changes / Porting Guide
+--------------------------------
+
+- Major overhaul to all code completed, variables have changed, role names have changed, please see the Conversion guide for more details.
+
+Removed Features (previously deprecated)
+----------------------------------------
+
+- ee_namespace role has been removed, this was removed in AAP 2.4, and was depreciated then.
+
+Bugfixes
+--------
+
+- Controller credentials role now includes request timeout option.
+- meta_dependency_check set to default to false. This is due to feature not working on controller, or in offline environments without a hub. Set controller_dependency_check to 'true' to re-enable feature.
 
 v2.11.0
 =======

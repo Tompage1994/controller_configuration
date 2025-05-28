@@ -1,4 +1,4 @@
-# galaxy.galaxy.ansible_config
+# infra.aap_configuration.ansible_config
 
 ## Description
 
@@ -20,20 +20,20 @@ Currently:
 |`aap_configuration_working_dir`|"/var/tmp"|no|path|Location to render the ansible config file to.|
 |`automation_hub_list`|`[]`|no|list|A list of Automation hubs and galaxies to put in the ansible config, see below for details.|
 |`ansible_config_list`|`[{"header":"galaxy","keypairs":[{"key":"ignore_certs","value":"{{ not (aap_validate_certs \| bool) }}"}]}]`|no|list|A set of ansible config settings, a default is set, but can be overridden, see below for details.|
-|`ah_token`|""|no|Tower Admin User's token on the Automation Hub Server.  This should be stored in an Ansible Vault at or elsewhere and called from a parent playbook.||
-|`ah_path_prefix`|`galaxy`|no|Tower Admin User's token on the Automation Hub Server.  This should be stored in an Ansible Vault at or elsewhere and called from a parent playbook.||
+|`aap_token`|""|no|Tower Admin User's token on the Automation Hub Server.  This should be stored in an Ansible Vault at or elsewhere and called from a parent playbook.||
+|`hub_path_prefix`|`galaxy`|no|Tower Admin User's token on the Automation Hub Server.  This should be stored in an Ansible Vault at or elsewhere and called from a parent playbook.||
 
 ### Secure Logging Variables
 
 The following Variables compliment each other.
 If Both variables are not set, secure logging defaults to false.
-The role defaults to False as normally the ansible config task does not by default include sensitive information, we highly recommend the use of ansible vault for passwords and tokens.
+The role defaults to false as normally the ansible config task does not by default include sensitive information, we highly recommend the use of ansible vault for passwords and tokens.
 aap_configuration_ansible_config_secure_logging defaults to the value of aap_configuration_secure_logging if it is not explicitly called. This allows for secure logging to be toggled for the entire suite of automation hub configuration roles with a single variable, or for the user to selectively use it.
 
 |Variable Name|Default Value|Required|Description|
 |:---:|:---:|:---:|:---:|
-|`aap_configuration_ansible_config_secure_logging`|`False`|no|Whether or not to include the sensitive ansible config role tasks in the log.  Set this value to `True` if you will be providing your sensitive values from elsewhere.|
-|`aap_configuration_secure_logging`|`False`|no|This variable enables secure logging as well, but is shared across multiple roles, see above.|
+|`aap_configuration_ansible_config_secure_logging`|`false`|no|Whether or not to include the sensitive ansible config role tasks in the log.  Set this value to `true` if you will be providing your sensitive values from elsewhere.|
+|`aap_configuration_secure_logging`|`false`|no|This variable enables secure logging as well, but is shared across multiple roles, see above.|
 
 ## Data Structures
 
@@ -95,7 +95,7 @@ automation_hub_list:
     aap_validate_certs: false
   # Define following vars here, or in ah_configs/ah_auth.yml
   # ah_host: ansible-ah-web-svc-test-project.example.com
-  # ah_token: changeme
+  # aap_token: changeme
   pre_tasks:
     - name: Include vars from ah_configs directory
       ansible.builtin.include_vars:
@@ -104,7 +104,7 @@ automation_hub_list:
       tags:
         - always
   roles:
-    - ../../ansible_config
+    - infra.aap_configuration.ansible_config
 ```
 
 ## License

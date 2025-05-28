@@ -1,4 +1,4 @@
-# group_roles
+# infra.aap_configuration.hub_group_roles
 
 ## Description
 
@@ -11,23 +11,23 @@ An Ansible Role to add roles to groups in Automation Hub.
 |`aap_hostname`|""|yes|URL to the Ansible Automation Platform Server.|127.0.0.1|
 |`aap_username`|""|no|Admin User on the Ansible Automation Platform Server. Either username / password or oauthtoken need to be specified.||
 |`aap_password`|""|no|Platform Admin User's password on the Server.  This should be stored in an Ansible Vault at vars/platform-secrets.yml or elsewhere and called from a parent playbook.||
-|`aap_validate_certs`|`True`|no|Whether or not to validate the Ansible Automation Platform Server's SSL certificate.||
+|`aap_validate_certs`|`true`|no|Whether or not to validate the Ansible Automation Platform Server's SSL certificate.||
 |`aap_request_timeout`|`10`|no|Specify the timeout Ansible should use in requests to the Galaxy or Automation Hub host.||
-|`ah_path_prefix`|""|no|API path used to access the api. Either galaxy, automation-hub, or custom||
+|`hub_path_prefix`|""|no|API path used to access the api. Either galaxy, automation-hub, or custom||
 |`aap_configuration_async_dir`|`null`|no|Sets the directory to write the results file for async tasks. The default value is set to `null` which uses the Ansible Default of `/root/.ansible_async/`.||
-|`ah_group_roles`|`see below`|yes|Data structure describing the roles which are applied to groups, described below.||
+|`hub_group_roles`|`see below`|yes|Data structure describing the roles which are applied to groups, described below.||
 
 ### Secure Logging Variables
 
 The following Variables compliment each other.
 If Both variables are not set, secure logging defaults to false.
-The role defaults to False as normally the add group task does not include sensitive information.
-ah_configuration_group_secure_logging defaults to the value of aap_configuration_secure_logging if it is not explicitly called. This allows for secure logging to be toggled for the entire suite of automation hub configuration roles with a single variable, or for the user to selectively use it.
+The role defaults to false as normally the add group task does not include sensitive information.
+hub_configuration_group_secure_logging defaults to the value of aap_configuration_secure_logging if it is not explicitly called. This allows for secure logging to be toggled for the entire suite of automation hub configuration roles with a single variable, or for the user to selectively use it.
 
 |Variable Name|Default Value|Required|Description|
 |:---:|:---:|:---:|:---:|
-|`ah_configuration_group_secure_logging`|`False`|no|Whether or not to include the sensitive Namespace role tasks in the log.  Set this value to `True` if you will be providing your sensitive values from elsewhere.|
-|`aap_configuration_secure_logging`|`False`|no|This variable enables secure logging as well, but is shared across multiple roles, see above.|
+|`hub_configuration_group_secure_logging`|`false`|no|Whether or not to include the sensitive Namespace role tasks in the log.  Set this value to `true` if you will be providing your sensitive values from elsewhere.|
+|`aap_configuration_secure_logging`|`false`|no|This variable enables secure logging as well, but is shared across multiple roles, see above.|
 
 ### Asynchronous Retry Variables
 
@@ -39,13 +39,13 @@ This also speeds up the overall role.
 |Variable Name|Default Value|Required|Description|
 |:---:|:---:|:---:|:---:|
 |`aap_configuration_async_timeout`|1000|no|This variable sets the async timeout for the role globally.|
-|`ah_configuration_group_roles_async_timeout`|`aap_configuration_async_timeout`|no|This variable sets the async timeout for the role.|
+|`hub_configuration_group_roles_async_timeout`|`aap_configuration_async_timeout`|no|This variable sets the async timeout for the role.|
 |`aap_configuration_async_retries`|50|no|This variable sets the number of retries to attempt for the role globally.|
-|`ah_configuration_group_roles_async_retries`|`aap_configuration_async_retries`|no|This variable sets the number of retries to attempt for the role.|
+|`hub_configuration_group_roles_async_retries`|`aap_configuration_async_retries`|no|This variable sets the number of retries to attempt for the role.|
 |`aap_configuration_loop_delay`|1000|no|This variable sets the loop_delay for the role globally.|
-|`ah_configuration_group_roles_loop_delay`|`aap_configuration_loop_delay`|no|This variable sets the loop_delay for the role.|
+|`hub_configuration_group_roles_loop_delay`|`aap_configuration_loop_delay`|no|This variable sets the loop_delay for the role.|
 |`aap_configuration_async_delay`|1|no|This sets the delay between retries for the role globally.|
-|`ah_configuration_group_roles_async_delay`|`aap_configuration_async_delay`|no|This sets the delay between retries for the role.|
+|`hub_configuration_group_roles_async_delay`|`aap_configuration_async_delay`|no|This sets the delay between retries for the role.|
 
 ## Data Structure
 
@@ -60,7 +60,7 @@ This also speeds up the overall role.
 #### role_list
 
 The `role_list` variable is a combination of roles and targets that are applied to the groups listed in `groups`.
-The structure look slike
+The structure looks like
 
 ```yaml
 - roles:
@@ -81,13 +81,13 @@ Targets consist of the following.
 |`collection_remotes`|List of collection remotes to apply the roles to.|
 |`collection_repositories`|List of collection repositories to apply the roles to.|
 |`execution_environments`|List of execution environments to apply the roles to.|
-|`container_registery_remotes`|List of container registry remotes to apply the roles to.|
+|`container_registry_remotes`|List of container registry remotes to apply the roles to.|
 
 #### Yaml Example
 
 ```yaml
 ---
-ah_group_roles:
+hub_group_roles:
   - state: present
     groups:
       - santa
@@ -101,7 +101,7 @@ ah_group_roles:
       - roles:
           - galaxy.container_remote
         targets:
-          container_registery_remotes:
+          container_registry_remotes:
             - quay
       - roles:
           - galaxy.user_admin
@@ -145,7 +145,7 @@ ah_group_roles:
       tags:
         - always
   roles:
-    - ../../hub_group_roles
+    - infra.aap_configuration.hub_group_roles
 ```
 
 ## License

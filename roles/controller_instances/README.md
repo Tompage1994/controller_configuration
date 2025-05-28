@@ -1,4 +1,4 @@
-# controller_configuration.instances
+# infra.aap_configuration.controller_instances
 
 ## Description
 
@@ -18,7 +18,7 @@ Currently:
 |:---|:---:|:---:|:---|:---|
 |`platform_state`|"present"|no|The state all objects will take unless overridden by object default|'absent'|
 |`aap_hostname`|""|yes|URL to the Ansible Automation Platform Server.|127.0.0.1|
-|`aap_validate_certs`|`True`|no|Whether or not to validate the Ansible Automation Platform Server's SSL certificate.||
+|`aap_validate_certs`|`true`|no|Whether or not to validate the Ansible Automation Platform Server's SSL certificate.||
 |`aap_username`|""|no|Admin User on the Ansible Automation Platform Server. Either username / password or oauthtoken need to be specified.||
 |`aap_password`|""|no|Platform Admin User's password on the Server.  This should be stored in an Ansible Vault at vars/platform-secrets.yml or elsewhere and called from a parent playbook.||
 |`aap_token`|""|no|Controller Admin User's token on the Ansible Automation Platform Server. This should be stored in an Ansible Vault at or elsewhere and called from a parent playbook. Either username / password or oauthtoken need to be specified.||
@@ -30,28 +30,28 @@ Currently:
 The following Variables compliment each other.
 If Both variables are not set, enforcing default values is not done.
 Enabling these variables enforce default values on options that are optional in the controller API.
-This should be enabled to enforce configuration and prevent configuration drift. It is recomended to be enabled, however it is not enforced by default.
+This should be enabled to enforce configuration and prevent configuration drift. It is recommended to be enabled, however it is not enforced by default.
 
-Enabling this will enforce configurtion without specifying every option in the configuration files.
+Enabling this will enforce configuration without specifying every option in the configuration files.
 
 'controller_configuration_instances_enforce_defaults' defaults to the value of 'aap_configuration_enforce_defaults' if it is not explicitly called. This allows for enforced defaults to be toggled for the entire suite of controller configuration roles with a single variable, or for the user to selectively use it.
 
 |Variable Name|Default Value|Required|Description|
 |:---:|:---:|:---:|:---:|
-|`controller_configuration_instances_enforce_defaults`|`False`|no|Whether or not to enforce default option values on only the applications role|
-|`aap_configuration_enforce_defaults`|`False`|no|This variable enables enforced default values as well, but is shared across multiple roles, see above.|
+|`controller_configuration_instances_enforce_defaults`|`false`|no|Whether or not to enforce default option values on only the applications role|
+|`aap_configuration_enforce_defaults`|`false`|no|This variable enables enforced default values as well, but is shared across multiple roles, see above.|
 
 ### Secure Logging Variables
 
 The following Variables compliment each other.
 If Both variables are not set, secure logging defaults to false.
-The role defaults to False as normally the add instances task does not include sensitive information.
+The role defaults to false as normally the add instances task does not include sensitive information.
 controller_configuration_instances_secure_logging defaults to the value of aap_configuration_secure_logging if it is not explicitly called. This allows for secure logging to be toggled for the entire suite of controller configuration roles with a single variable, or for the user to selectively use it.
 
 |Variable Name|Default Value|Required|Description|
 |:---:|:---:|:---:|:---:|
-|`controller_configuration_instances_secure_logging`|`False`|no|Whether or not to include the sensitive instance groups role tasks in the log. Set this value to `True` if you will be providing your sensitive values from elsewhere.|
-|`aap_configuration_secure_logging`|`False`|no|This variable enables secure logging as well, but is shared across multiple roles, see above.|
+|`controller_configuration_instances_secure_logging`|`false`|no|Whether or not to include the sensitive instance groups role tasks in the log. Set this value to `true` if you will be providing your sensitive values from elsewhere.|
+|`aap_configuration_secure_logging`|`false`|no|This variable enables secure logging as well, but is shared across multiple roles, see above.|
 
 ### Asynchronous Retry Variables
 
@@ -78,13 +78,13 @@ This also speeds up the overall role.
 |:---:|:---:|:---:|:---:|:---:|
 |`hostname`|""|yes|str|Hostname of this instance.|
 |`capacity_adjustment`|""|float|no|Capacity adjustment between 0 and 1.|
-|`enabled`|False|no|bool|If true, the instance will be enabled and used.|
-|`managed_by_policy`|False|no|bool|If true, will be managed by instance group policy.|
+|`enabled`|false|no|bool|If true, the instance will be enabled and used.|
+|`managed_by_policy`|false|no|bool|If true, will be managed by instance group policy.|
 |`node_type`|""|no|str|Role that this node plays in the mesh. Most likely Execution. Current options are 'execution'.|
 |`node_state`|""|no|str|Indicates the current life cycle stage of this instance. Current options are 'installed' and 'deprovisioning'.|
 |`listener_port`|""|no|int|Port that Receptor will listen for incoming connections on.|
 |`peers`|[]|no|list|List of peers to connect outbound to. Only configurable for hop and execution nodes.|
-|`peers_from_control_nodes`|False|no|bool|If enabled, control plane nodes will automatically peer to this node.|
+|`peers_from_control_nodes`|false|no|bool|If enabled, control plane nodes will automatically peer to this node.|
 
 ### Standard Instance Data Structure
 
@@ -118,7 +118,7 @@ controller_instances:
         ignore_files: [controller_config.yml.template]
         extensions: ["yml"]
   roles:
-    - {role: infra.aap_configuration.instances, when: controller_instances is defined}
+    - {role: infra.aap_configuration.controller_instances, when: controller_instances is defined}
 ```
 
 ## License

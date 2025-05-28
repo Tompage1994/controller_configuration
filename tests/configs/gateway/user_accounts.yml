@@ -1,0 +1,8 @@
+---
+aap_user_accounts:
+  - username: controller_user
+    is_superuser: false
+    password: asdf
+    first_name: steve
+    last_name: bob
+...

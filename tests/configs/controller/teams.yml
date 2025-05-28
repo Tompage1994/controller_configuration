@@ -1,0 +1,23 @@
+---
+aap_teams:
+  - name: satellite-qe
+    organization: Satellite
+  - name: satlab-admin
+    organization: Satellite
+  - name: differential-1
+    organization: Default
+  - name: differential-2
+    organization: Default
+  - name: Netops
+    description: Network Ops Team
+    organization: Satellite
+  - name: Netadmin
+    description: Network Admin Team
+    organization: Satellite
+  - name: Compute T1
+    description: Computer T1 Team
+    organization: Satellite
+  - name: Compute T2
+    description: Computer T22 Team
+    organization: Satellite
+...
