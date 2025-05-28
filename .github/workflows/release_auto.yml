@@ -1,7 +1,7 @@
 ---
 # This workflow action will run pre-commit, which will execute ansible and yaml linting
 # See .pre-commit-config.yaml for what hooks are executed
-name: Automated Release
+name: Release - Automated
 
 on:
   schedule:
@@ -24,7 +24,7 @@ jobs:
       - name: calculate bump level
         id: bump_level
         shell: bash
-        run: ../files/calculate_change.sh
+        run: .github/files/calculate_change.sh
 
       - uses: actions-ecosystem/action-bump-semver@v1
         id: bump-semver
