@@ -36,6 +36,14 @@ jobs:
         with:
           tag: ${{ steps.bump-semver.outputs.new_version }}
 
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        env:
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+          tag_name: ${{ steps.bump-semver.outputs.new_version }}
+          generate_release_notes: true
+
   # release:
   #   uses: "redhat-cop/ansible_collections_tooling/.github/workflows/release_pipeline_dual.yml@main"
   #   with:
