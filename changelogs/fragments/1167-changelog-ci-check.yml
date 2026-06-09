@@ -1,0 +1,4 @@
+---
+minor_changes:
+  - ci - Add antsibull-changelog lint step to the pre-commit workflow to validate changelog fragments and changelog.yaml (https://github.com/redhat-cop/infra.aap_configuration/issues/1167)
+...
